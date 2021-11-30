@@ -23,11 +23,15 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
 
 //////////////////////// New  Workout route //////////////////////
 
-app.get("/submit", (req, res) =>
-  res.sendFile(path.join(__dirname, "/public/exercise.html"))
+app.get("/exercise", (req, res) =>
+  res.sendFile(path.join(__dirname, "./public/exercise.html"))
 );
 
 ////////////////////// stats route ///////////////////////////////
+
+app.get("/stats", (req, res) =>
+  res.sendFile(path.join(__dirname, "./public/stats.html"))
+);
 
 // app.get("/submit", ({ body }, res) => {
 //   workout.create(body).then((dbWorkout) => {
@@ -54,9 +58,9 @@ app.get("/api/workouts", async (req, res) => {
     });
 });
 
-////////////////////// adding a new workout //////////////////////////
+////////////////////// adding a new workout and continue work out update //////////////////////////
 
-////////////////////// dashboard route ///////////////////////////////
+
 
 /////////////////////////////////////////////////////////////////////
 
