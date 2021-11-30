@@ -1,12 +1,10 @@
-const { lookup } = require("dns");
 const express = require("express");
-// const mongojs = require("mongojs");
+const logger = require("morgan");
+const path = require("path");
 
 const mongoose = require("mongoose");
 
 const PORT = process.env.PORT || 3000;
-
-const logger = require("morgan");
 
 const app = express();
 const workout = require("./models/Workout");
@@ -25,13 +23,19 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
 
 //////////////////////// New  Workout route //////////////////////
 
-app.post("/api/workouts/:id", ({ body }, res) => {
-  workout.create(body).then((dbWorkout) => {
-    res.json(dbWorkout);
-  });
-});
+app.get("/submit", (req, res) =>
+  res.sendFile(path.join(__dirname, "/public/exercise.html"))
+);
 
-////////////getting the stats from dashboard route /////////////////
+////////////////////// stats route ///////////////////////////////
+
+// app.get("/submit", ({ body }, res) => {
+//   workout.create(body).then((dbWorkout) => {
+//     res.json(dbWorkout);
+//   });
+// });
+
+//////////// getting last workout data /////////////////
 
 app.get("/api/workouts", async (req, res) => {
   workout
@@ -49,6 +53,10 @@ app.get("/api/workouts", async (req, res) => {
       res.json(err);
     });
 });
+
+////////////////////// adding a new workout //////////////////////////
+
+////////////////////// dashboard route ///////////////////////////////
 
 /////////////////////////////////////////////////////////////////////
 
