@@ -7,7 +7,9 @@ const mongoose = require("mongoose");
 const PORT = process.env.PORT || 3000;
 
 const app = express();
-const workout = require("./models/Workout");
+const Workout = require("./models/Workout");
+
+// const { Workout } = require("./models");
 
 app.use(logger("dev"));
 
@@ -27,6 +29,15 @@ app.get("/exercise", (req, res) =>
   res.sendFile(path.join(__dirname, "./public/exercise.html"))
 );
 
+app.post("/api/workouts", (req, res) => {
+  Workout.create(req.body)
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
 ////////////////////// stats route ///////////////////////////////
 
 app.get("/stats", (req, res) =>
@@ -42,14 +53,14 @@ app.get("/stats", (req, res) =>
 //////////// getting last workout data /////////////////
 
 app.get("/api/workouts", async (req, res) => {
-  workout
-    .aggregate([
-      {
-        $addFields: {
-          totalDuration: { $sum: "$exercises.duration" },
-        },
+  Workout.aggregate([
+    {
+      $addFields: {
+        totalDuration: { $sum: "$exercises.duration" },
       },
-    ])
+    },
+  ])
+    .sort({ day: 1 })
     .then((dbWorkout) => {
       res.json(dbWorkout);
     })
@@ -58,9 +69,17 @@ app.get("/api/workouts", async (req, res) => {
     });
 });
 
-////////////////////// adding a new workout and continue work out update //////////////////////////
+////////////////////// continue workout route//////////////////////////
 
-
+app.put("api/workouts/:id", (req, res) => {
+  Workout.findByIdAndUpdate({ _id: req.params.id }, { $push: req.body })
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
 
 /////////////////////////////////////////////////////////////////////
 
