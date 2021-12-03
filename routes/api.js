@@ -37,7 +37,7 @@ router.get("/api/workouts", (req, res) => {
       },
     },
   ])
-    .sort({ day: 1 })
+    .sort({ date: -1 }) //day 1
     .then((dbWorkout) => {
       res.json(dbWorkout);
     })
