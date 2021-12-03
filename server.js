@@ -1,7 +1,6 @@
 const express = require("express");
 const logger = require("morgan");
 const path = require("path");
-const response = require("express");
 const mongoose = require("mongoose");
 
 const PORT = process.env.PORT || 3000;
@@ -19,10 +18,11 @@ app.use(express.static("public"));
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
   useNewUrlParser: true,
   useCreateIndex: true,
-  /* useFindAndModify: false, */
+  useFindAndModify: false,
+  useUnifiedTopology: false,
 });
 
-app.use(require("./routes/api"));
+app.use(require("./routes/api.js"));
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
