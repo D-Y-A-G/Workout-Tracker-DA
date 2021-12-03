@@ -9,8 +9,6 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 const Workout = require("./models/Workout");
 
-// const { Workout } = require("./models");
-
 app.use(logger("dev"));
 
 app.use(express.urlencoded({ extended: true }));

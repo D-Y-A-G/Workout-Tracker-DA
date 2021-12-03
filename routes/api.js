@@ -12,7 +12,7 @@ router.get("/", (req, res) =>
 /////////////////// stats route //////////////////////////
 router.get("/stats", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/stats.html"));
-});
+}); 
 
 //////////// getting last workout data /////////////////
 
