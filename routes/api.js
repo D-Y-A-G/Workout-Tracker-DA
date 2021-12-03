@@ -9,11 +9,24 @@ router.get("/", (req, res) =>
   res.sendFile(path.join(__dirname, "../public/index.html"))
 );
 
-/////////////////// stats route //////////////////////////
+/////////////////// exercise and stats route //////////////////////////
 router.get("/stats", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/stats.html"));
-}); 
+});
 
+router.get("/exercise", (req, res) =>
+  res.sendFile(path.join(__dirname, "../public/exercise.html"))
+);
+
+router.get("api/workouts/range", (req, res) => {
+  db.Workout.find({})
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+    });
+});
 //////////// getting last workout data /////////////////
 
 router.get("/api/workouts", (req, res) => {
@@ -29,25 +42,20 @@ router.get("/api/workouts", (req, res) => {
       res.json(dbWorkout);
     })
     .catch((err) => {
-      res.status(400).json(err);
+      res.status(500).json(err);
     });
 });
 
 //////////////// routes to store new exercise data //////////////////////////
 
-router.get("/exercise", (req, res) =>
-  res.sendFile(path.join(__dirname, "../public/exercise.html"))
-);
-
 router.post("/api/workouts/", ({ body }, res) => {
-  db.Workout.create(body);
-  console
-    .log(body)
+  db.Workout.create(body)
+
     .then((dbWorkout) => {
       res.json(dbWorkout);
     })
     .catch((err) => {
-      res.status(400).json(err);
+      res.status(500).json(err);
     });
 });
 
@@ -62,7 +70,7 @@ router.put("/api/workouts/:id", (req, res) => {
       res.json(dbWorkout);
     })
     .catch((err) => {
-      res.status(400).json(err);
+      res.status(500).json(err);
     });
 });
 
